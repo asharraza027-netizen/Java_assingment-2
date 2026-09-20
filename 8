@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+abstract class Loan {
+    protected double principal;
+    protected double rate;
+    protected double time;
+
+    public Loan(double principal, double rate, double time) {
+        this.principal = principal;
+        this.rate = rate;
+        this.time = time;
+    }
+
+    public abstract double calculateInterest();
+}
+
+class HomeLoan extends Loan {
+    public HomeLoan(double principal, double time) {
+        // Home Loan rate is fixed at 8%
+        super(principal, 8.0, time);
+    }
+
+    @Override
+    public double calculateInterest() {
+        return (principal * rate * time) / 100;
+    }
+}
+
+class CarLoan extends Loan {
+    public CarLoan(double principal, double time) {
+        // Car Loan rate is fixed at 10%
+        super(principal, 10.0, time);
+    }
+
+    @Override
+    public double calculateInterest() {
+        return (principal * rate * time) / 100;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        while (sc.hasNext()) {
+            String line = sc.nextLine().trim();
+            if (line.isEmpty()) {
+                break;
+            }
+            
+            String[] parts = line.split(",");
+            String type = parts[0].trim();
+            double principal = Double.parseDouble(parts[1].trim());
+            double time = Double.parseDouble(parts[2].trim());
+            
+            if (type.equals("Home")) {
+                Loan homeLoan = new HomeLoan(principal, time);
+                System.out.println("Home Loan Interest: " + homeLoan.calculateInterest());
+            } else if (type.equals("Car")) {
+                Loan carLoan = new CarLoan(principal, time);
+                System.out.println("Car Loan Interest: " + carLoan.calculateInterest());
+            }
+        }
+        
+        sc.close();
+    }
+}
