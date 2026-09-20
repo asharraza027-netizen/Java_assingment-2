@@ -1,0 +1,83 @@
+import java.util.Scanner;
+
+class Course {
+    private String courseName;
+    private String duration;
+
+    public Course(String courseName, String duration) {
+        this.courseName = courseName;
+        this.duration = duration;
+    }
+
+    @Override
+    public String toString() {
+        return courseName + " (" + duration + ")";
+    }
+}
+
+class Student {
+    protected String name;
+    protected Course enrolledCourse;
+
+    public Student(String name, Course enrolledCourse) {
+        this.name = name;
+        this.enrolledCourse = enrolledCourse;
+    }
+
+    @Override
+    public String toString() {
+        return "Student: " + name + " Course: " + enrolledCourse.toString();
+    }
+}
+
+class PremiumStudent extends Student {
+    private int discount;
+
+    public PremiumStudent(String name, Course enrolledCourse, int discount) {
+        super(name, enrolledCourse);
+        this.discount = discount;
+    }
+
+    @Override
+    public String toString() {
+        // Output formatted continuously on one line to account for PDF text wrapping
+        return "Premium Student: " + name + " Course: " + enrolledCourse.toString() + " Discount: " + discount + "%";
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // Read the first line to create the Course object
+        if (sc.hasNextLine()) {
+            String courseLine = sc.nextLine().trim();
+            if (!courseLine.isEmpty()) {
+                String[] courseParts = courseLine.split(",");
+                Course course = new Course(courseParts[0].trim(), courseParts[1].trim());
+                
+                // Process the remaining lines for Students and PremiumStudents
+                while (sc.hasNext()) {
+                    String line = sc.nextLine().trim();
+                    if (line.isEmpty()) {
+                        break;
+                    }
+                    
+                    String[] parts = line.split(",");
+                    String name = parts[0].trim();
+                    
+                    if (parts.length == 2) {
+                        Student student = new Student(name, course);
+                        System.out.println(student);
+                    } else if (parts.length == 3) {
+                        int discount = Integer.parseInt(parts[2].trim());
+                        PremiumStudent premiumStudent = new PremiumStudent(name, course, discount);
+                        System.out.println(premiumStudent);
+                    }
+                }
+            }
+        }
+        
+        sc.close();
+    }
+}
