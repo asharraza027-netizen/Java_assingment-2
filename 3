@@ -47,10 +47,13 @@ public class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         
-        while (sc.hasNextLine()) {
-            String line = sc.nextLine();
-            if (line.trim().isEmpty()) {
-                continue;
+        // Use hasNext() to prevent getting stuck on empty trailing lines
+        while (sc.hasNext()) {
+            String line = sc.nextLine().trim();
+            
+            // Break immediately if the line is empty (handles platform quirks)
+            if (line.isEmpty()) {
+                break; 
             }
             
             String[] parts = line.split(",");
