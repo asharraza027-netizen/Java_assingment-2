@@ -1,0 +1,67 @@
+import java.util.Scanner;
+
+class Account {
+    private String accNo;
+    private String holderName;
+    private double balance;
+
+    public Account(String accNo, String holderName, double initialBalance) {
+        this.accNo = accNo;
+        this.holderName = holderName;
+        this.balance = initialBalance;
+    }
+
+    public void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposited: " + amount);
+    }
+
+    public void withdraw(double amount) {
+        if (balance >= amount) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Insufficient funds.");
+        }
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        // Creating a default account since the input format does not provide account details
+        Account account = new Account("101010", "Default User", 0.0);
+        
+        if (sc.hasNextLine()) {
+            String firstLine = sc.nextLine().trim();
+            if (!firstLine.isEmpty()) {
+                int numCommands = Integer.parseInt(firstLine);
+                
+                for (int i = 0; i < numCommands; i++) {
+                    if (sc.hasNextLine()) {
+                        String commandLine = sc.nextLine().trim();
+                        String[] parts = commandLine.split(" ");
+                        String action = parts[0];
+                        
+                        if (action.equals("deposit")) {
+                            double amount = Double.parseDouble(parts[1]);
+                            account.deposit(amount);
+                        } else if (action.equals("withdraw")) {
+                            double amount = Double.parseDouble(parts[1]);
+                            account.withdraw(amount);
+                        } else if (action.equals("getBalance")) {
+                            System.out.println("Balance: " + account.getBalance());
+                        }
+                    }
+                }
+            }
+        }
+        
+        sc.close();
+    }
+}
