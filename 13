@@ -1,0 +1,110 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Guest {
+    private String name;
+    private int age;
+    private String idProof;
+
+    public Guest(String name, int age, String idProof) {
+        this.name = name;
+        this.age = age;
+        this.idProof = idProof;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getIdProof() {
+        return idProof;
+    }
+
+    public void setIdProof(String idProof) {
+        this.idProof = idProof;
+    }
+
+    @Override
+    public String toString() {
+        return name + "," + age + "," + idProof;
+    }
+}
+
+class Reservation {
+    private String reservationId;
+    private String roomType;
+    private List<Guest> guests;
+
+    public Reservation(String reservationId, String roomType) {
+        this.reservationId = reservationId;
+        this.roomType = roomType;
+        this.guests = new ArrayList<>();
+    }
+
+    public void addGuest(Guest guest) {
+        this.guests.add(guest);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Reservation ID: ").append(reservationId).append(" Room: ").append(roomType).append("\n");
+        sb.append("Guests:\n");
+        for (int i = 0; i < guests.size(); i++) {
+            sb.append(guests.get(i).toString());
+            // Avoid adding an extra newline after the last guest
+            if (i < guests.size() - 1) {
+                sb.append("\n");
+            }
+        }
+        return sb.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        if (sc.hasNextLine()) {
+            String resLine = sc.nextLine().trim();
+            if (!resLine.isEmpty()) {
+                String[] resParts = resLine.split(",");
+                String resId = resParts[0].trim();
+                String roomType = resParts[1].trim();
+                int numGuests = Integer.parseInt(resParts[2].trim());
+                
+                Reservation reservation = new Reservation(resId, roomType);
+                
+                for (int i = 0; i < numGuests; i++) {
+                    if (sc.hasNextLine()) {
+                        String guestLine = sc.nextLine().trim();
+                        String[] gParts = guestLine.split(",");
+                        String name = gParts[0].trim();
+                        int age = Integer.parseInt(gParts[1].trim());
+                        String idProof = gParts[2].trim();
+                        
+                        Guest guest = new Guest(name, age, idProof);
+                        reservation.addGuest(guest);
+                    }
+                }
+                
+                System.out.println(reservation);
+            }
+        }
+        
+        sc.close();
+    }
+}
