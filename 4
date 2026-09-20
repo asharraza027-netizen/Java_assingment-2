@@ -1,0 +1,117 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class Product {
+    private String productName;
+    private double price;
+    private int quantity;
+
+    public Product() {
+    }
+
+    public Product(String productName, double price, int quantity) {
+        this.productName = productName;
+        this.price = price;
+        this.quantity = quantity;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotal() {
+        return price * quantity;
+    }
+
+    @Override
+    public String toString() {
+        // Formats as "Laptop x1 = 50000"
+        return productName + " x" + quantity + " = " + (int) getTotal();
+    }
+}
+
+class Order {
+    private String orderId;
+    private List<Product> products;
+
+    public Order(String orderId) {
+        this.orderId = orderId;
+        this.products = new ArrayList<>();
+    }
+
+    public void addProduct(Product p) {
+        this.products.add(p);
+    }
+
+    public double calculateTotal() {
+        double total = 0;
+        for (Product p : products) {
+            total += p.getTotal();
+        }
+        return total;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Order ID: ").append(orderId).append("\n");
+        sb.append("Products:\n");
+        for (Product p : products) {
+            sb.append(p.toString()).append("\n");
+        }
+        sb.append("Total: ").append((int) calculateTotal());
+        return sb.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        if (sc.hasNextLine()) {
+            String orderId = sc.nextLine().trim();
+            Order order = new Order(orderId);
+            
+            if (sc.hasNextLine()) {
+                int numProducts = Integer.parseInt(sc.nextLine().trim());
+
+                for (int i = 0; i < numProducts; i++) {
+                    if (sc.hasNextLine()) {
+                        String[] parts = sc.nextLine().split(",");
+                        String name = parts[0].trim();
+                        double price = Double.parseDouble(parts[1].trim());
+                        int qty = Integer.parseInt(parts[2].trim());
+
+                        Product product = new Product(name, price, qty);
+                        order.addProduct(product);
+                    }
+                }
+            }
+            
+            System.out.println(order);
+        }
+        
+        sc.close();
+    }
+}
