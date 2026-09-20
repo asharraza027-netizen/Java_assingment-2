@@ -1,0 +1,60 @@
+import java.util.Scanner;
+
+class Author {
+    private String name;
+    private String email;
+    private String gender;
+
+    public Author(String name, String email, String gender) {
+        this.name = name;
+        this.email = email;
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + gender + "), Email: " + email;
+    }
+}
+
+class Book {
+    private String title;
+    private int price;
+    private Author author;
+
+    public Book(String title, int price, Author author) {
+        this.title = title;
+        this.price = price;
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Book: " + title + "\nPrice: " + price + "\nAuthor: " + author.toString();
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        
+        if (sc.hasNextLine()) {
+            String line = sc.nextLine().trim();
+            if (!line.isEmpty()) {
+                String[] parts = line.split(",");
+                String title = parts[0].trim();
+                int price = Integer.parseInt(parts[1].trim());
+                String authorName = parts[2].trim();
+                String email = parts[3].trim();
+                String gender = parts[4].trim();
+                
+                Author author = new Author(authorName, email, gender);
+                Book book = new Book(title, price, author);
+                
+                System.out.println(book);
+            }
+        }
+        
+        sc.close();
+    }
+}
